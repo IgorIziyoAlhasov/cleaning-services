@@ -1,0 +1,101 @@
+/* styles/globals.css */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF; /* White background */
+    color: #000000; /* Black text */
+    height: 100%;
+    min-height: 100%;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #FFFFFF; /* White text for navigation */
+  }
+  
+  nav {
+    background-color: #00A4CCFF; /* Water color */
+    padding: 10px;
+    text-align: center;
+  }
+  
+  nav a {
+    margin: 0 15px;
+    padding: 10px 20px;
+    background-color: #00A4CCFF;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  nav a:hover {
+    background-color: #005F6BFF; /* Darker water on hover */
+  }
+  
+  h1, h2 {
+    margin: 20px 0;
+    color: #000000; /* Black for headings */
+    text-align: center;
+  }
+  
+  form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+    background-color: #FFFFFF; /* White form background */
+  }
+  
+  form div {
+    margin-bottom: 15px;
+  }
+  
+  form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  form input, form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #DDDDDD;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  button {
+    background-color: #00A4CCFF; /* Water color for button */
+    color: #FFFFFF; /* White text for button */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #005F6BFF; /* Darker water on hover */
+  }
+  
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    color: #666666;
+    background-color: #F5F5F5;
+  }
+  
+  .container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main {
+    flex-grow: 1;
+  }  
