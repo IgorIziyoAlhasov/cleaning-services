@@ -95,7 +95,7 @@ export default function ClientForm({
     const { target: { value } } = event;
     setClient({
       ...client,
-      days_of_service: Array.isArray(value) ? value : value.split(','),
+      days_of_service: Array.isArray(value) ? value.sort((x, y) => x - y) : value.split(','),
     });
   };
 
@@ -108,7 +108,7 @@ export default function ClientForm({
   };
 
   const onSubmit = (e) => {
-    e.preventDefault();  
+    e.preventDefault();
     handleSubmit(client);
   };
 
@@ -192,6 +192,7 @@ export default function ClientForm({
                     key={day.id}
                     label={day.day_name}
                     onDelete={() => handleRemoveDay(day.id)}
+                    onMouseDown={(event) => event.stopPropagation()} // avoid opening the dropdown upon chip click
                   />
                 ) : null;
               })}
@@ -206,6 +207,7 @@ export default function ClientForm({
             </MenuItem>
           ))}
         </Select>
+
 
         <TextField
           label="Hours per Day"
