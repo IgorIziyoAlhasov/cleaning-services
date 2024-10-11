@@ -23,6 +23,9 @@ export const createClient = async (clientData) => {
 
 // Update an existing client
 export const updateClient = async (clientId, clientData) => {
+    console.log('clientId:', clientId);
+    console.log('clientData:', clientData);
+    
     const { data, error } = await supabase.from('clients').update(clientData).eq('id', clientId);
     if (error) throw error;
     return data;

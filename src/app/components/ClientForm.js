@@ -12,6 +12,7 @@ export default function ClientForm({
 }) {
   // State management for the client
   const [client, setClient] = useState({
+    ...(isModal && { id: initialClient.id || null }), // Only include id if it's a modal to edit the client
     company_name: initialClient.company_name || '',
     email: initialClient.email || '',
     street_address: initialClient.street_address || '',
@@ -29,6 +30,10 @@ export default function ClientForm({
   // State management for dropdown options
   const [daysOfWeek, setDaysOfWeek] = useState([]);
   const [businessCenters, setBusinessCenters] = useState([]);
+  const [parsedDaysOfService, setParsedDaysOfService] = useState([]);
+
+  // State management for notifications
+  const [notification, setNotification] = useState(null);
 
   // Fetch days of the week and business centers when the component mounts
   useEffect(() => {
@@ -41,11 +46,26 @@ export default function ClientForm({
         setBusinessCenters(centers);
       } catch (error) {
         console.error('Error loading data:', error);
+        setNotification('Error loading data. Please try again later.');
       }
     };
 
     loadData();
   }, []);
+
+  // Effect to parse days_of_service when the client data changes
+  useEffect(() => {
+    let parsedDays = [];
+    try {
+      parsedDays = Array.isArray(client.days_of_service)
+        ? client.days_of_service
+        : JSON.parse(client.days_of_service || '[]');
+    } catch (e) {
+      console.error('Error parsing days_of_service:', e);
+      parsedDays = [];
+    }
+    setParsedDaysOfService(parsedDays);
+  }, [client.days_of_service]);
 
   // Handle input changes
   const handleInputChange = (e, field, isCheckbox = false) => {
@@ -65,7 +85,7 @@ export default function ClientForm({
       setClient({
         ...client,
         business_center_id: selectedCenterId,
-        street_address: selectedCenter.address,
+        street_address: selectedCenter.address || '',
         floor: selectedCenter.floor_count || '',
       });
     }
@@ -75,7 +95,7 @@ export default function ClientForm({
     const { target: { value } } = event;
     setClient({
       ...client,
-      days_of_service: typeof value === 'string' ? value.split(',') : value,
+      days_of_service: Array.isArray(value) ? value : value.split(','),
     });
   };
 
@@ -88,13 +108,12 @@ export default function ClientForm({
   };
 
   const onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault();  
     handleSubmit(client);
   };
 
-  return (
-    <div className={isModal ? "bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 relative" : "bg-white w-full p-6 rounded-lg shadow"}>
-      <h2 className="text-2xl font-bold mb-4">{isEditing ? 'Edit Client' : 'Register Client'}</h2>
+  const formContent = (
+    <>
       <form onSubmit={onSubmit}>
         <TextField
           label="Company Name"
@@ -161,7 +180,7 @@ export default function ClientForm({
         <Select
           labelId="days-of-service-label"
           multiple
-          value={client.days_of_service}
+          value={parsedDaysOfService}
           onChange={handleDaysOfServiceChange}
           input={<OutlinedInput id="select-multiple-chip" label="Days of Service" />}
           renderValue={(selected) => (
@@ -234,6 +253,18 @@ export default function ClientForm({
           )}
         </div>
       </form>
+    </>
+  )
+
+  return isModal ? (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 relative">
+        {formContent}
+      </div>
+    </div>
+  ) : (
+    <div className="container mx-auto py-8">
+      {formContent}
     </div>
   );
 }
